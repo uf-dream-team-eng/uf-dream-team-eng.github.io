@@ -1,0 +1,24 @@
+<header>
+    <div class="container-fluid">
+        <div class = "row">
+            <div class="col-md-3 col-sm-3 col-3">
+                <div class="logo-container">
+                    <a href="/"><img src="./../../assets/dte-icon.png" alt="" class="logo"></a>
+                </div>
+            </div>
+            <div class="col-md-9 col-sm-9 col-9 text-end">
+                <div class="menu-icon" (click)="toggleMenu()">
+                    <i class="{{menu_icon}}"></i>
+                </div>
+                <div class="desktop_menu" [class.mobile_menu]="menuValue">
+                    <ul>
+                        <li (click)="closeMenu()"><a href="/">Home</a></li>
+                        <li (click)="closeMenu()"><a href="https://www.ufdreamteameng.org/about-us">About Us</a></li>
+                        <li (click)="closeMenu()"><a href="https://www.ufdreamteameng.org/sponsor-us">Sponsor Us</a></li>
+                        <li (click)="closeMenu()"><a href="https://www.ufdreamteameng.org/contact-us">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
