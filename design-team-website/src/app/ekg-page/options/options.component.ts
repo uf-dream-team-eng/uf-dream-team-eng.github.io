@@ -13,6 +13,9 @@ export class OptionsComponent implements OnInit {
   Baudrate: number = 9600;
   port: any;
   reader: any;
+  lineBuffer = '';
+  latestValue = 0;
+
   @Output() data: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object) { }
@@ -51,16 +54,22 @@ export class OptionsComponent implements OnInit {
             const { value, done } = await this.reader.read();
     
             if (done) {
-              this.reader.releaseLock();
               break;
             }
-            
-            if(value){
-              this.data.emit(value)
+            // this.data.emit(value)
+            // console.log(parseFloat(value))
+            let utf8decoder = new TextDecoder();
+            let in_char = utf8decoder.decode(value);
+            this.lineBuffer += in_char;
+            if(in_char === '\n'){
+              this.data.emit(this.lineBuffer);
+              this.lineBuffer = ''
             }
          }
         } catch (error){
           console.log("error " + error)
+        } finally {
+          this.reader.releaseLock();
         }
 
     }

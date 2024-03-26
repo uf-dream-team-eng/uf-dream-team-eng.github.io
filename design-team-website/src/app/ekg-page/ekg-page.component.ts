@@ -15,14 +15,13 @@ declare var Plotly: any; // Declare Plotly to avoid TypeScript errors
 export class EkgPageComponent implements OnInit {
 
   // Vars
-
   private intervalId: any; // Interval identifier
-  public array: number[] = []
-  private window: number[] = []
-  private windowLength = 30
+  private window: number[] = [];
+  private timestamps: number[] = []; // Array to store timestamps in milliseconds
+  private startTime: number = 0; // Store the start time in milliseconds
 
-  private cnt = 0;
-
+  private windowLength = 500;
+  private plotLayout = { title: "EKG Signal Plot" };
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object) { }
 
@@ -30,6 +29,7 @@ export class EkgPageComponent implements OnInit {
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
       // This code will only execute in the browser
+      this.startTime = Date.now(); // Store the start time
       this.loadPlotly();
     }
   }
@@ -41,11 +41,7 @@ export class EkgPageComponent implements OnInit {
     script.src = 'https://cdn.plot.ly/plotly-latest.min.js';
     script.onload = () => {
       // Plotly script loaded, init the plot
-      Plotly.newPlot('plot', [{
-        y: [0],
-        mode: 'lines',
-        line: {color: '#80CAF6'}
-      }]);
+      Plotly.newPlot('plot', [{ y: this.window }], this.plotLayout);
     };
     document.head.appendChild(script);
   }
@@ -54,30 +50,32 @@ export class EkgPageComponent implements OnInit {
   startRealtimeUpdate(): void {
     this.intervalId = setInterval(() => {
       this.updatePlot();
-    }, 1); // Update every second
+    }, 60); // Update every millisecond
   }
 
-  receiveData(data: Uint8Array): void{
-    this.array = this.array.concat(data[0]);
-    this.window = this.window.concat(data[0]);
-    if(this.window.length > this.windowLength){
-      this.window.splice(0, 1);
-    }
-    if(this.array.length == this.windowLength){
+  receiveData(data: any): void {
+    if (this.window.length === 0) {
       this.startRealtimeUpdate();
     }
 
-    console.log(this.window)
+    const newData = parseFloat(data);
+    const now = Date.now(); // Current timestamp in milliseconds
+    const timestampSinceStart = now - this.startTime; // Time since start in milliseconds
+    this.timestamps.push(timestampSinceStart); // Store the timestamp
+    this.window.push(newData);
+
+    if (this.window.length > this.windowLength) {
+      this.window.shift(); // Remove oldest data point
+      this.timestamps.shift(); // Remove oldest timestamp
+    }
   }
 
   // Update the plot
-  updatePlot(): void {   
-
-    var data_update = {
-      y: [this.window]
-    };
-
-    Plotly.update('plot', data_update)
+  updatePlot(): void {
+    Plotly.newPlot('plot', [{
+      x: this.timestamps, // Use timestamps as x-axis data
+      y: this.window
+    }], this.plotLayout);
   }
 
   // Clean up the interval when the component is destroyed
@@ -85,4 +83,3 @@ export class EkgPageComponent implements OnInit {
     clearInterval(this.intervalId);
   }
 }
-
