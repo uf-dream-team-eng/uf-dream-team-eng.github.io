@@ -1,1 +1,2 @@
-<button type="button" class="btn btn-primary" (click)="open()"><i class="bi bi-usb-symbol"></i>Open</button>
+<button type="button" class="btn btn-primary" (click)="open()" [disabled]="this.isreading"><i class="bi bi-usb-symbol"></i> Open</button>
+<button type="button" class="btn btn-danger" (click)="close()" [disabled]="!this.isreading"><i class="bi bi-x-octagon-fill"></i> Close</button>

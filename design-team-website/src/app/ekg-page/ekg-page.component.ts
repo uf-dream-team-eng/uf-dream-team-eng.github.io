@@ -1,19 +1,19 @@
+// Imports
 import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { OptionsComponent } from './options/options.component';
 
 declare var Plotly: any; // Declare Plotly to avoid TypeScript errors
 
+// Angular Component //
 @Component({
   selector: 'app-ekg-page',
   standalone: true,
   imports: [OptionsComponent],
   templateUrl: './ekg-page.component.html',
-  styleUrl: './ekg-page.component.scss'
+  styleUrl: './ekg-page.component.scss',
 })
-
 export class EkgPageComponent implements OnInit {
-
   // Vars
   private intervalId: any; // Interval identifier
   private window: number[] = [];
@@ -21,9 +21,9 @@ export class EkgPageComponent implements OnInit {
   private startTime: number = 0; // Store the start time in milliseconds
 
   private windowLength = 500;
-  private plotLayout = { title: "EKG Signal Plot" };
+  private plotLayout = { title: 'EKG Signal Plot', responsive: true };
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) { }
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
 
   // Check that we are running in the browser so we can load plotly
   ngOnInit(): void {
@@ -41,7 +41,16 @@ export class EkgPageComponent implements OnInit {
     script.src = 'https://cdn.plot.ly/plotly-latest.min.js';
     script.onload = () => {
       // Plotly script loaded, init the plot
-      Plotly.newPlot('plot', [{ y: this.window }], this.plotLayout);
+      Plotly.newPlot(
+        'plot',
+        [
+          {
+            x: this.timestamps, // Use timestamps as x-axis data
+            y: this.window,
+          },
+        ],
+        this.plotLayout
+      );
     };
     document.head.appendChild(script);
   }
@@ -50,7 +59,7 @@ export class EkgPageComponent implements OnInit {
   startRealtimeUpdate(): void {
     this.intervalId = setInterval(() => {
       this.updatePlot();
-    }, 60); // Update every millisecond
+    }, 60); // Update every 60 milliseconds
   }
 
   receiveData(data: any): void {
@@ -72,10 +81,16 @@ export class EkgPageComponent implements OnInit {
 
   // Update the plot
   updatePlot(): void {
-    Plotly.newPlot('plot', [{
-      x: this.timestamps, // Use timestamps as x-axis data
-      y: this.window
-    }], this.plotLayout);
+    Plotly.newPlot(
+      'plot',
+      [
+        {
+          x: this.timestamps, // Use timestamps as x-axis data
+          y: this.window,
+        },
+      ],
+      this.plotLayout
+    );
   }
 
   // Clean up the interval when the component is destroyed
