@@ -1,0 +1,62 @@
+.labels{
+    padding-right: 10px;
+}
+.dropdown-menu{
+    max-height: 200px;
+    overflow-y: auto;
+}
+.container {
+    padding: 10px;
+  }
+  
+  .panel {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 20px;
+  }
+  
+  .panel-heading {
+    background-color: #f5f5f5;
+    padding: 10px 15px;
+    border-bottom: 1px solid #ddd;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+  }
+  
+  .panel-title {
+    font-size: 16px;
+    margin: 0;
+  }
+  
+  .panel-body {
+    padding: 15px;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .labels {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .input-group {
+    display: flex;
+  }
+  
+  .input-group-append {
+    margin-left: -1px;
+  }
+  
+  .dropdown-toggle-split::after {
+    margin-left: .255em;
+  }
+  
+  .btn-success i {
+    margin-right: 5px;
+  }
+  
+  .axis-controls{
+    padding-top: 25%;
+  }

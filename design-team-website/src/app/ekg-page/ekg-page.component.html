@@ -1,5 +1,35 @@
-<app-options (data)="receiveData($event)"></app-options>
-<div class="container" id="plot"></div>
+<!-- Header -->
+<nav class="navbar navbar-light bg-light">
+    <span class="navbar-brand mb-0 h1">ECG Recorder & Player</span>
+</nav>
+<div class="container-fluid">
+    <div class="row">
+        <!-- Main Content Area -->
+        <div class="col-md-9 main-content">
+            <div class="ecg-display" #plot (plotly_relayout)="onRelayout()"></div>
+
+            <!-- Control Buttons -->
+            <div class="d-flex justify-content-start align-items-center mt-3">
+                <app-options></app-options>
+                <button type="button" class="btn btn-info mx-1" (click)="this.isPaused = false" [hidden]="!this.isPaused" [disabled]="!this.isConnected">
+                    <i class="bi bi-play-fill"></i> Play
+                </button>
+                <button type="button" class="btn btn-warning mx-1" (click)="this.isPaused = true" [hidden]="this.isPaused" [disabled]="!this.isConnected">
+                    <i class="bi bi-pause-fill"></i> Pause
+                </button>
+                <button type="button" class="btn btn-success mx-1" (click)="export()"[disabled]="!this.isConnected">
+                    <i class="bi bi-pause-fill"></i> Export
+                </button>
+            </div>
+        </div>
+        <!-- Sidebar -->
+        <div class="col-lg-3 col-md-4 col-12 sidebar">
+            <app-axis-control></app-axis-control>
+        </div>
+
+
+    </div>
+</div>
 <div class="container">
     <div class="card">
         <div class="card-body">
@@ -10,5 +40,6 @@
                 <li class="text-success">🟢: Left Arm</li>
             </ul>
         </div>
+        
     </div>
 </div>

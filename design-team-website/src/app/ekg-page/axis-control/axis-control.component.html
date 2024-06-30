@@ -1,0 +1,178 @@
+<div class="container axis-controls">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h5 class="panel-title">Time</h5>
+      </div>
+
+
+      <!-- Position Axis Data -->
+      <div class="panel-body">
+        <div class="form-group">
+          <label for="position" class="labels">Position:</label>
+          <div class="input-group">
+
+
+            <!-- Input Box -->
+            <input
+              type="text"
+              class="form-control"
+              id="position"
+              [(ngModel)]="inputFields['Position']"
+              (blur)="convert('Position', false)"
+              (keyup.enter)="convert('Position', false)"
+            />
+
+            <!-- Dropdown -->
+            <div class="input-group-append">
+              <button
+                type="button"
+                class="btn btn-danger dropdown-toggle dropdown-toggle-split"
+                data-bs-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              ></button>
+              <div class="dropdown-menu">
+                <a
+                  *ngFor="let option of positionOptions; trackBy: trackByFn"
+                  class="dropdown-item"
+                  (click)="inputFields['Position'] = option; convert('Position', false)"
+                >
+                  {{ option }}
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- Base axis Data -->
+        <div class="form-group">
+          <label for="base" class="labels">Base:</label>
+          <div class="input-group">
+
+            
+            <!-- Input Box -->
+            <input
+              type="text"
+              class="form-control"
+              id="base"
+              [(ngModel)]="inputFields['Base']"
+              (blur)="convert('Base', true)"
+              (keyup.enter)="convert('Base', true)"
+            />
+
+            <!-- Dropdown -->
+            <div class="input-group-append">
+              <button
+                type="button"
+                class="btn btn-danger dropdown-toggle dropdown-toggle-split"
+                data-bs-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              ></button>
+              <div class="dropdown-menu">
+                <a
+                  *ngFor="let option of baseOptions; trackBy: trackByFn"
+                  class="dropdown-item"
+                  (click)="inputFields['Base'] = option; convert('Base', false)"
+                >
+                  {{ option }}
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h5 class="panel-title">Voltage</h5>
+      </div>
+
+
+      <!-- Offset Axis Data -->
+      <div class="panel-body">
+        <div class="form-group">
+          <label for="offset" class="labels">Offset:</label>
+          <div class="input-group">
+
+
+            <!-- Input Box -->
+          <input
+            type="text"
+            class="form-control"
+            id="offset"
+            [(ngModel)]="inputFields['Offset']"
+            (blur)="convert('Offset', false)"
+            (keyup.enter)="convert('Offset', false)"
+          />
+
+
+          <!-- Dropdown -->
+          <div class="input-group-append">
+            <button
+              type="button"
+              class="btn btn-danger dropdown-toggle dropdown-toggle-split"
+              data-bs-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            ></button>
+            <div class="dropdown-menu">
+              <a
+                *ngFor="let option of offsetOptions; trackBy: trackByFn"
+                class="dropdown-item"
+                (click)="inputFields['Offset'] = option; convert('Offset', false)"
+              >
+                {{ option }}
+              </a>
+            </div>
+          </div>
+          </div>
+        </div>
+
+
+
+        <!-- Range Axis Data -->
+        <div class="form-group">
+          <label for="range" class="labels">Range:</label>
+
+
+          <!-- Input Box -->
+          <div class="input-group">
+            <input
+              type="text"
+              class="form-control"
+              id="range"
+              [(ngModel)]="inputFields['Range']"
+              (blur)="convert('Range', true)"
+              (keyup.enter)="convert('Range', true)"
+            />
+
+
+            <!-- Dropdown -->
+            <div class="input-group-append">
+              <button
+                type="button"
+                class="btn btn-danger dropdown-toggle dropdown-toggle-split"
+                data-bs-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              ></button>
+              <div class="dropdown-menu">
+                <a
+                  *ngFor="let option of rangeOptions; trackBy: trackByFn"
+                  class="dropdown-item"
+                  (click)="inputFields['Range'] = option; convert('Range', false)"
+                >
+                  {{ option }}
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
