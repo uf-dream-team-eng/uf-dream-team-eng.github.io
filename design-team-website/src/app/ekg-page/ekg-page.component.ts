@@ -117,7 +117,7 @@ export class EkgPageComponent implements AfterViewInit, OnDestroy {
     margin: { l: 80, r: 50, t: 50, b: 80 },
     plot_bgcolor: 'white',
     paper_bgcolor: 'white',
-    dragmode: 'pan',
+    dragmode: false,
     font: {
       family: 'Arial, sans-serif',
     },
@@ -170,8 +170,12 @@ export class EkgPageComponent implements AfterViewInit, OnDestroy {
       this.sampleIndex++;
       if (currentTime > this.position + 5 * this.base) {
         // If we are start back at the start of the window
-        this.xArray.length = this.sampleIndex + 1;
-        this.yArray.length = this.sampleIndex + 1;
+
+        // this.xArray.length = this.sampleIndex + 1;
+        // this.yArray.length = this.sampleIndex + 1;
+
+        this.xArray.length = 0;
+        this.yArray.length = 0;
 
         this.sampleIndex = 0;
         this.startTime =
@@ -275,7 +279,7 @@ export class EkgPageComponent implements AfterViewInit, OnDestroy {
   startRealtimeUpdate(): void {
     this.intervalId = setInterval(() => {
       this.updatePlot();
-    }, 60); // Update every 60 milliseconds
+    }, 1); // Update every 1 milliseconds
   }
 
   updatePlot(): void {
@@ -343,5 +347,52 @@ export class EkgPageComponent implements AfterViewInit, OnDestroy {
     } else {
       alert('Your browser does not support downloading files.');
     }
+  }
+  downloadCSVAndImage() {
+    // CSV Download Logic
+    const header = [
+      'X Axis (' + this.baseUnit + ')',
+      'Y Axis (' + this.rangeUnit + ')',
+    ]; // CSV header row
+    const filename = 'ECG_Data.csv';
+
+    // Combine x-axis and y-axis data into CSV rows
+    const csvData = this.xArray.map((x, index) => [x, this.yArray[index]]);
+
+    // Format data as CSV
+    const csv = [header.join(','), ...csvData.map((row) => row.join(','))].join(
+      '\n'
+    );
+
+    // Create a Blob object for the CSV content
+    const csvBlob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+
+    // Create a download link for the CSV file
+    const csvLink = document.createElement('a');
+    const csvUrl = URL.createObjectURL(csvBlob);
+    csvLink.setAttribute('href', csvUrl);
+    csvLink.setAttribute('download', filename);
+
+    // Append CSV link to the body and trigger download
+    document.body.appendChild(csvLink);
+    csvLink.click();
+    document.body.removeChild(csvLink);
+
+    // Image Download Logic
+    Plotly.toImage('chart', {
+      format: 'png',
+      width: 800,
+      height: 600,
+    }).then(function (dataUrl: string) {
+      // Create a download link for the image
+      const imgLink = document.createElement('a');
+      imgLink.setAttribute('href', dataUrl);
+      imgLink.setAttribute('download', 'EKG_SCREENSHOT');
+
+      // Append Image link to the body and trigger download
+      document.body.appendChild(imgLink);
+      imgLink.click();
+      document.body.removeChild(imgLink);
+    });
   }
 }

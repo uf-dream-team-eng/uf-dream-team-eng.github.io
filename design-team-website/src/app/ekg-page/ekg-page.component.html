@@ -6,7 +6,7 @@
     <div class="row">
         <!-- Main Content Area -->
         <div class="col-md-9 main-content">
-            <div class="ecg-display" #plot (plotly_relayout)="onRelayout()"></div>
+            <div id= 'chart' class="ecg-display" #plot (plotly_relayout)="onRelayout()"></div>
 
             <!-- Control Buttons -->
             <div class="d-flex justify-content-start align-items-center mt-3">
@@ -19,6 +19,9 @@
                 </button>
                 <button type="button" class="btn btn-success mx-1" (click)="export()"[disabled]="!this.isConnected">
                     <i class="bi bi-pause-fill"></i> Export
+                </button>
+                <button type="button" class="btn btn-primary mx-1" (click)="downloadCSVAndImage()"[disabled]="!this.isConnected">
+                    <i class="bi bi-camera-fill"></i> Screenshot
                 </button>
             </div>
         </div>

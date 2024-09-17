@@ -73,15 +73,8 @@ export class SerialService {
           // Create a decoder since we are sending the data as ASCII strings
           let utf8decoder = new TextDecoder();
           let in_char = utf8decoder.decode(value);
-
-          // Hold each received char until we get a new line
-          lineBuffer += in_char;
-          if (in_char === '\n') {
-            // Once we get a new line emit the data and clear the line buffer
-            if (!isNaN(parseFloat(lineBuffer))) {
-              this.dataSubject.next(parseFloat(lineBuffer));
-            }
-            lineBuffer = '';
+          if (!isNaN(parseFloat(in_char))) {
+            this.dataSubject.next(parseFloat(in_char));
           }
         }
       } catch (error) {
