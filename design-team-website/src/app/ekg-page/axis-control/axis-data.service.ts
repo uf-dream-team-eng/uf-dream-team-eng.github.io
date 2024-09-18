@@ -10,9 +10,9 @@ export class AxisDataService {
     [key: string]: { data: string; units: string };
   }>({
     Position: { data: '0', units: 's' },
-    Base: { data: '1', units: 's/div' },
-    Offset: { data: '525', units: 'mv' },
-    Range: { data: '105', units: 'mv/div' },
+    Base: { data: '0.5', units: 's/div' },
+    Offset: { data: '0', units: 'mv' },
+    Range: { data: '50', units: 'mv/div' },
   });
   fields$ = this.fieldsSubject.asObservable();
 

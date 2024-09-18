@@ -16,6 +16,7 @@ import { AxisDataService } from './axis-control/axis-data.service';
 import { Subscription } from 'rxjs';
 import { offset } from '@popperjs/core';
 import { SerialService } from './options/serial.service';
+import { LowPassFilterService } from '../lowpassfilter.service';
 
 declare var Plotly: any; // Declare Plotly to avoid TypeScript errors
 
@@ -132,7 +133,8 @@ export class EkgPageComponent implements AfterViewInit, OnDestroy {
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
     public axisDataService: AxisDataService,
-    private serialService: SerialService
+    private serialService: SerialService,
+    private lpfService: LowPassFilterService
   ) {}
 
   ngAfterViewInit(): void {
@@ -156,13 +158,17 @@ export class EkgPageComponent implements AfterViewInit, OnDestroy {
         ) - this.startTime;
 
       // Get the current voltage make sure to change the units to match
-      const currentVoltage = this.axisDataService.unitConvert(
+      let currentVoltage = this.axisDataService.unitConvert(
         (newSamples / 1024).toString(),
         'v',
         this.rangeUnit
       );
 
       // Save the samples
+
+      // Low Pass
+      currentVoltage = this.lpfService.applyFilter(currentVoltage);
+
       this.xArray[this.sampleIndex] = currentTime;
       this.yArray[this.sampleIndex] = currentVoltage;
 
